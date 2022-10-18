@@ -3,4 +3,6 @@ module.exports = function (app) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
     next();
   });
+
+  app.post("/auth/signup", controller.signup);
 };
