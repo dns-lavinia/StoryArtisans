@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     
     text: {
+        color: theme.colors.text,
         fontWeight: 'bold',
         fontSize: 15,
         lineHeight: 26,

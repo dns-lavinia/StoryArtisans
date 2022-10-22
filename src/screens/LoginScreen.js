@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 
 // Local atoms
 import Button from '../components/atoms/Button';
 import TextInput from '../components/atoms/TextInput';
 import Background from '../components/atoms/LoginBackground';
 import Header from '../components/atoms/Header';
+import BackButton from '../components/atoms/BackButton';
 
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('');
@@ -15,8 +15,10 @@ const LoginScreen = ({navigation}) => {
     
     return (
         <Background>
+            <BackButton goBack={navigation.goBack} />
             <Header>Welcome Back</Header>
 
+            {/* Email input text box */}
             <TextInput
                 label="Email"
                 returnKeyType="next"
@@ -30,6 +32,7 @@ const LoginScreen = ({navigation}) => {
                 keyboardType="email-address"
             />
 
+            {/* Password input text box */}
             <TextInput
                 label="Password"
                 returnKeyType="done"
