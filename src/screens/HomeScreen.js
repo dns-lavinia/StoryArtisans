@@ -1,14 +1,14 @@
 import React from "react";
 
 // Local atom imports
-import Background from "../components/atoms/LoginBackground";
+import DarkBackground from "../components/atoms/DarkBackground";
 import Header from "../components/atoms/Header";
 import Button from "../components/atoms/Button";
 
 export default function HomeScreen ({ navigation }) {
     return (
-        <Background>
-            <Header>This is the home screen</Header>
+        <DarkBackground>
+            <Header>This is the home screen.</Header>
             <Button
                 mode="outlined"
                 onPress={() =>
@@ -20,6 +20,6 @@ export default function HomeScreen ({ navigation }) {
             >
                 Logout
             </Button>
-        </Background>
+        </DarkBackground>
     );
 }

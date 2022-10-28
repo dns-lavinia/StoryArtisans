@@ -9,25 +9,27 @@ import {
   LoginScreen, StartScreen, RegisterScreen, HomeScreen
 } from './screens';
 
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+
 // Create a stack that will keep the screens
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 // for Login and Register screens
 export default function App() {
     return (
         <Provider theme={theme}>
           <NavigationContainer>
-                <Stack.Navigator
+                <RootStack.Navigator
                     initialRouteName="StartScreen"
                     screenOptions={{
                         headerShown: false,
                     }}
                 >   
-                    <Stack.Screen name="StartScreen" component={StartScreen} />
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-              </Stack.Navigator>
+                    <RootStack.Screen name="StartScreen" component={StartScreen} />
+                    <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+                    <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
+                    <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+                </RootStack.Navigator>
             </NavigationContainer>
         </Provider>
     );
