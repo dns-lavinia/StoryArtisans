@@ -1,10 +1,25 @@
 import React from "react";
-import { Text, View } from 'react-native';
 
-export default function HomeScreen () {
+// Local atom imports
+import Background from "../components/atoms/LoginBackground";
+import Header from "../components/atoms/Header";
+import Button from "../components/atoms/Button";
+
+export default function HomeScreen ({ navigation }) {
     return (
-        <View>
-            <Text> This is the home feed. </Text>
-        </View>
-    )
+        <Background>
+            <Header>This is the home screen</Header>
+            <Button
+                mode="outlined"
+                onPress={() =>
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'StartScreen' }],
+                })
+                }
+            >
+                Logout
+            </Button>
+        </Background>
+    );
 }

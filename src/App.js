@@ -6,7 +6,7 @@ import { theme } from './core/theme';
 
 // Screen imports
 import {
-  LoginScreen, StartScreen, RegisterScreen
+  LoginScreen, StartScreen, RegisterScreen, HomeScreen
 } from './screens';
 
 // Create a stack that will keep the screens
@@ -26,6 +26,7 @@ export default function App() {
                     <Stack.Screen name="StartScreen" component={StartScreen} />
                     <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
               </Stack.Navigator>
             </NavigationContainer>
         </Provider>

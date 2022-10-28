@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text } from "react-native-paper";
+
+import { theme } from "../core/theme"; 
 
 // Local atoms import 
 import Background from "../components/atoms/LoginBackground";
@@ -70,6 +74,30 @@ export default function RegisterScreen({ navigation }) {
                 Sign Up
             </Button>
 
+            {/* Link to the Login page */}
+            <View style={styles.row}>
+                <Text style={styles.textBeforeLink}>Already have an account? </Text>
+                <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
+                    <Text style={styles.link}>Login</Text>
+                </TouchableOpacity>
+            </View>
+
         </Background>
     );
 }
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        marginTop: 4,
+    },
+
+    textBeforeLink: {
+        color: theme.colors.darkText,
+    },
+
+    link: {
+        fontWeight: 'bold',
+        color: theme.colors.primary,
+    },
+})

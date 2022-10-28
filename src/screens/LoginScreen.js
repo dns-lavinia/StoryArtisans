@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { Text } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { theme } from '../core/theme';
 
 // Local atoms
 import Button from '../components/atoms/Button';
@@ -12,7 +16,14 @@ const LoginScreen = ({navigation}) => {
     const [userPassword, setUserPassword] = useState('');
     
     // TODO: Handle possible input errors
+    const onLoginPressed = () => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'HomeScreen' }],
+        })
+    }
     
+
     return (
         <Background>
             <BackButton goBack={navigation.goBack} />
@@ -43,12 +54,37 @@ const LoginScreen = ({navigation}) => {
                 secureTextEntry
             />
 
-            <Button mode="contained">
+            <Button mode="contained" onPress={onLoginPressed}>
                 Login
             </Button>
+
+            {/* Link to the Login page */}
+            <View style={styles.row}>
+                <Text style={styles.textBeforeLink}>Don't have an account? </Text>
+                <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+                    <Text style={styles.link}>Register</Text>
+                </TouchableOpacity>
+            </View>
+
 
         </Background>
     )
 };
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        marginTop: 4,
+    },
+
+    textBeforeLink: {
+        color: theme.colors.darkText,
+    },
+
+    link: {
+        fontWeight: 'bold',
+        color: theme.colors.primary,
+    },
+})
 
 export default LoginScreen;
