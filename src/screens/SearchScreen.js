@@ -1,8 +1,11 @@
 import React from "react";
-import { Text } from "react-native-paper";
+import DarkBackground from "../components/atoms/DarkBackground";
+import Header from "../components/atoms/Header";
 
 export default function SearchScreen () {
     return (
-        <Text>This is the search screen.</Text>
+        <DarkBackground>
+            <Header>This is the search screen.</Header>
+        </DarkBackground>
     );
 }

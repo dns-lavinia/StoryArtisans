@@ -14,5 +14,10 @@ export const theme = {
         firstColors: "#f3f3f3",
         background: "#f3f3f3",
         underlineColor: "#494949",
+        dark: "#000000",
+    },
+
+    screenOptionStyle: {
+        headerShown: false,
     },
 };

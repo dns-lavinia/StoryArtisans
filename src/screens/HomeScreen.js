@@ -10,7 +10,7 @@ export default function HomeScreen ({ navigation }) {
         <DarkBackground>
             <Header>This is the home screen.</Header>
             <Button
-                mode="outlined"
+                mode="contained"
                 onPress={() =>
                 navigation.reset({
                     index: 0,

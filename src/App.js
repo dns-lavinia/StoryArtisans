@@ -6,7 +6,7 @@ import { theme } from './core/theme';
 
 // Screen imports
 import {
-  LoginScreen, StartScreen, RegisterScreen, HomeScreen
+  LoginScreen, StartScreen, RegisterScreen
 } from './screens';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
