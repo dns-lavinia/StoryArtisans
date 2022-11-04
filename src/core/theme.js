@@ -15,6 +15,7 @@ export const theme = {
         background: "#f3f3f3",
         underlineColor: "#494949",
         dark: "#000000",
+        borderColor: "#e5e5e5",
     },
 
     screenOptionStyle: {

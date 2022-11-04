@@ -1,13 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from '@expo/vector-icons';
+import { StyleSheet } from "react-native";
 
 import { theme } from "../core/theme";
 
 // Local navigator imports
 import HomeStackNavigator from "./HomeStackNavigator";
 import SearchStackNavigator from "./SearchStackNavigator";
-  
+import ComposeStackNavigator from "./ComposeStackNavigator";
+import ReadStackNavigator from "./ReadStackNavigator";  
+import ProfileStackNavigator from "./ProfileStackNavigator";
+
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
@@ -28,6 +32,8 @@ export default function BottomTabNavigator() {
             name="Home" 
             component={HomeStackNavigator} 
             options={{
+              headerStyle: styles.headerStyle,
+              headerTintColor: theme.colors.text,
               tabBarLabel: "Home",
               tabBarShowLabel: false,
               tabBarIcon: ({ color }) => {
@@ -41,6 +47,8 @@ export default function BottomTabNavigator() {
             name="Search" 
             component={SearchStackNavigator}
             options={{
+              headerStyle: styles.headerStyle,
+              headerTintColor: theme.colors.text,
               tabBarLabel: "Search",
               tabBarShowLabel: false,
               tabBarIcon: ({ color }) => {
@@ -52,8 +60,10 @@ export default function BottomTabNavigator() {
         {/* Configuration for the Compose tab */}
         <Tab.Screen 
             name="Compose" 
-            component={SearchStackNavigator}
+            component={ComposeStackNavigator}
             options={{
+              headerStyle: styles.headerStyle,
+              headerTintColor: theme.colors.text,
               tabBarLabel: "Compose",
               tabBarShowLabel: false,
               tabBarIcon: ({ color }) => {
@@ -65,8 +75,10 @@ export default function BottomTabNavigator() {
         {/* Configuration for the Read tab */}
         <Tab.Screen 
             name="Read" 
-            component={SearchStackNavigator}
+            component={ReadStackNavigator}
             options={{
+              headerStyle: styles.headerStyle,
+              headerTintColor: theme.colors.text,
               tabBarLabel: "Read",
               tabBarShowLabel: false,
               tabBarIcon: ({ color }) => {
@@ -78,8 +90,10 @@ export default function BottomTabNavigator() {
         {/* Configuration for the Profile tab */}
         <Tab.Screen 
             name="Profile" 
-            component={SearchStackNavigator}
+            component={ProfileStackNavigator}
             options={{
+              headerStyle: styles.headerStyle,
+              headerTintColor: theme.colors.text,
               tabBarLabel: "Profile",
               tabBarShowLabel: false,
               tabBarIcon: ({ color }) => {
@@ -90,3 +104,12 @@ export default function BottomTabNavigator() {
     </Tab.Navigator>
   );
 };
+
+
+const styles = StyleSheet.create({
+  headerStyle: {
+      backgroundColor: theme.colors.secondary,
+      borderBottomWidth: 0.2,
+      borderColor: theme.colors.borderColor,
+  },
+})
