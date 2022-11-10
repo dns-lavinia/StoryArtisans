@@ -41,8 +41,9 @@ export default function StartScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     logoBox: {
-        width: 353,
-        height: 311,
+        paddingTop: 20,
+        width: 340,
+        height: 300,
         marginBottom: 30,
     },
 

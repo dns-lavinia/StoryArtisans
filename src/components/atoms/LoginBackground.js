@@ -1,5 +1,6 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { ImageBackground, StyleSheet, ScrollView } from 'react-native';
 import { theme } from '../../core/theme';
 
 export default function Background({ children }) {
@@ -7,9 +8,11 @@ export default function Background({ children }) {
     <ImageBackground
         style={styles.background}
     >
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+
+        <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.container}>
             {children}
-        </KeyboardAvoidingView>
+        </ScrollView>
+
     </ImageBackground>
     );
 }
@@ -20,14 +23,19 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: theme.colors.primaryBackground,
     },
-      
-    container: {
+
+    scrollStyle: {
         flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
+
+    container: {
+        paddingTop: 80,
         padding: 20,
         width: '100%',
         maxWidth: 340,
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-    },
+    }
 });

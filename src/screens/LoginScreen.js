@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native-paper';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 
 import { theme } from '../core/theme';
 
@@ -11,12 +11,28 @@ import Background from '../components/atoms/LoginBackground';
 import Header from '../components/atoms/Header';
 import BackButton from '../components/atoms/BackButton';
 
+// Utils import
+import { emailValidator } from '../utils/emailValidator';
+import { passwordValidator } from '../utils/passwordValidator';
+import { color } from 'react-native-elements/dist/helpers';
+
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     
     // TODO: Handle possible input errors
-    const onLoginPressed = () => {
+    const onLoginPressed = async () => {
+        const emailError = emailValidator(email.value);
+        const passwordError = passwordValidator(password.value);
+
+        if (emailError || passwordError) {
+            setUserEmail({ ...email, error: emailError });
+            setUserPassword({ ...password, error: passwordError });
+            return;
+        }
+
+        await axios.post("http://localhost:8001/api/login", { email, password });
+        
         navigation.reset({
           index: 0,
           routes: [{ name: 'BottomTabNavigator' }],
@@ -64,7 +80,6 @@ const LoginScreen = ({navigation}) => {
                     <Text style={styles.link}>Register</Text>
                 </TouchableOpacity>
             </View>
-
 
         </Background>
     )
