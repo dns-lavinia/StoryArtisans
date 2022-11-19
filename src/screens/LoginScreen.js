@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native-paper';
-import { View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
 import { theme } from '../core/theme';
 
@@ -14,7 +15,6 @@ import BackButton from '../components/atoms/BackButton';
 // Utils import
 import { emailValidator } from '../utils/emailValidator';
 import { passwordValidator } from '../utils/passwordValidator';
-import { color } from 'react-native-elements/dist/helpers';
 
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('');
@@ -31,7 +31,12 @@ const LoginScreen = ({navigation}) => {
             return;
         }
 
-        await axios.post("http://localhost:8001/api/login", { email, password });
+        const resp = await axios.post("http://localhost:8000/auth/signin", { email, password });
+
+        if(resp.data.error)
+            alert(resp.data.error)
+        else
+            alert("Login in successfully");
         
         navigation.reset({
           index: 0,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
+import axios from 'axios';
 
 import { theme } from "../core/theme"; 
 
@@ -11,10 +12,40 @@ import TextInput from "../components/atoms/TextInput";
 import Header from "../components/atoms/Header";
 import Button from "../components/atoms/Button";
 
+// utils import
+import { emailValidator } from '../utils/emailValidator';
+import { passwordValidator } from '../utils/passwordValidator';
+import { nameValidator } from '../utils/nameValidator';
+
 export default function RegisterScreen({ navigation }) {
     const [username, setUsername] = useState({ value: '', error: '' })
     const [email, setEmail] = useState({ value: '', error: '' })
     const [password, setPassword] = useState({ value: '', error: '' })
+
+    const onRegisterPressed = async () => {
+        const usernameError = nameValidator(username.value);
+        const emailError = emailValidator(email.value);
+        const passwordError = passwordValidator(password.value);
+
+        if (emailError || passwordError || nameError) {
+          setUsername({ ...username, error: usernameError });
+          setEmail({ ...email, error: emailError });
+          setPassword({ ...password, error: passwordError });
+          return;
+        }
+
+        const resp = await axios.post("http://localhost:8000/auth/signup", { username, email, password });
+
+        if(resp.data.error)
+            alert(resp.data.error);
+        else
+            alert("Login in successfully");
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomTabNavigator' }],
+        });
+    }
 
     return (
         <Background>
@@ -69,6 +100,7 @@ export default function RegisterScreen({ navigation }) {
             
             <Button
                 mode="contained"
+                onPress={onRegisterPressed}
                 style={{ marginTop: 24 }}
             >
                 Sign Up
