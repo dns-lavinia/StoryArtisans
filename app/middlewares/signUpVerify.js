@@ -3,6 +3,8 @@ const ROLES = db.ROLES;
 const User = db.user;
 
 checkDuplicateUsernameOrEmail = (req, res, next) => {
+  console.log("mere");
+  console.log(req);
   // Username
   User.findOne({
     username: req.body.username,

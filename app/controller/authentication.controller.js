@@ -1,7 +1,9 @@
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+const config = require("../dbconfig/config");
 
+var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
@@ -103,4 +105,13 @@ exports.signin = (req, res) => {
         roles: authorities,
       });
     });
+};
+
+exports.signout = async (req, res) => {
+  try {
+    req.session = null;
+    return res.status(200).send({ message: "You've been signed out!" });
+  } catch (err) {
+    this.next(err);
+  }
 };
