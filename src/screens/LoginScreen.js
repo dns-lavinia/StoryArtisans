@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text } from 'react-native-paper';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import e from "cors";
 
 import { theme } from '../core/theme';
 
@@ -17,8 +18,8 @@ import { emailValidator } from '../utils/emailValidator';
 import { passwordValidator } from '../utils/passwordValidator';
 
 const LoginScreen = ({navigation}) => {
-    const [userEmail, setUserEmail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
+    const [userEmail, setUserEmail] = useState({ value: "", error: "" });
+    const [userPassword, setUserPassword] = useState({ value: "", error: "" });
     
     // TODO: Handle possible input errors
     const onLoginPressed = async () => {
@@ -31,18 +32,48 @@ const LoginScreen = ({navigation}) => {
             return;
         }
 
-        const resp = await axios.post("http://localhost:8000/auth/signin", { email, password });
-
-        if(resp.data.error)
-            alert(resp.data.error)
-        else
-            alert("Login in successfully");
-        
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'BottomTabNavigator' }],
-        })
-    }
+        try {
+            var signin_data = {
+              email: userEmail.value,
+              password: userPassword.value,
+              roles: ["user"],
+            };
+            
+            let response = "";
+            
+            await axios
+                .post("http://localhost:8080/api/auth/signin", signin_data)
+                .then((res) => {
+                    response = res.data;
+                })
+                .catch((err) => {
+                    response = err.response.data.message;
+                });
+              
+            response = response.toString();
+            if (response == "User Not found.") {
+                console.log("n-am gasit user");
+            } else if (response == "Invalid Password!") {
+                console.log("nu-i buna parola");
+            } else {
+                const emailError = emailValidator(userEmail.value);
+                const passwordError = passwordValidator(userPassword.value);
+                
+                if (emailError || passwordError) {
+                    setUserEmail({ ...userEmail, error: emailError });
+                    setUserPassword({ ...userPassword, error: passwordError });
+                    return;
+                }
+              
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "BottomTabNavigator" }],
+                });
+            }
+          } catch (e) {
+            console.log(e);
+          }
+    };
     
     return (
         <Background>

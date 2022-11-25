@@ -34,18 +34,47 @@ export default function RegisterScreen({ navigation }) {
           return;
         }
 
-        const resp = await axios.post("http://localhost:8000/auth/signup", { username, email, password });
-
-        if(resp.data.error)
-            alert(resp.data.error);
-        else
-            alert("Login in successfully");
-
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'BottomTabNavigator' }],
-        });
-    }
+        try {
+            var signup_data = {
+                username: username.value,
+                email: email.value,
+                password: password.value,
+                roles: ["user"],
+            };
+            
+            let response;
+            
+            const resp = await axios
+                .post(
+                    "http://localhost:8080/api/auth/signup",
+                    JSON.parse(JSON.stringify(signup_data))
+                )
+                .then((res) => {
+                    response = res.data.message;
+                })
+                .catch((err) => {
+                    response = err.response.data.message;
+                });
+              
+            if (response === "Failed! Username is already in use!") {
+                console.log("username e folosit");
+            } else if (response === "Failed! Email is already in use!") {
+                console.log("email e folosit");
+            } else {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "BottomTabNavigator" }],
+                });
+            }
+            
+            // console.log(lol.data);
+          } catch (e) {
+                console.log(e);
+          }
+          
+          //Failed! Username is already in use!
+          //Failed! Email is already in use!
+    };
 
     return (
         <Background>
