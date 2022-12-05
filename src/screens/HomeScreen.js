@@ -11,8 +11,10 @@ export default function HomeScreen ({ navigation }) {
     // page or associated with a button that logouts which would
     // be visible from all pages
     const onLogOutPressed = async () => {
+        // When using an android emulator with expo-go 
+        // use 10.0.2.2 instead of localhost
         const resp = await axios
-            .post("http://localhost:8080/api/auth/signout")
+            .post("http://10.0.2.2:8080/api/auth/signout")
             .then((res) => {
                 response = res.data.message;
             })

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Text } from 'react-native-paper';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import e from "cors";
 
 import { theme } from '../core/theme';
 
@@ -23,12 +22,12 @@ const LoginScreen = ({navigation}) => {
     
     // TODO: Handle possible input errors
     const onLoginPressed = async () => {
-        const emailError = emailValidator(email.value);
-        const passwordError = passwordValidator(password.value);
+        const emailError = emailValidator(userEmail.value);
+        const passwordError = passwordValidator(userPassword.value);
 
         if (emailError || passwordError) {
-            setUserEmail({ ...email, error: emailError });
-            setUserPassword({ ...password, error: passwordError });
+            setUserEmail({ ...userEmail, error: emailError });
+            setUserPassword({ ...userPassword, error: passwordError });
             return;
         }
 
@@ -39,8 +38,10 @@ const LoginScreen = ({navigation}) => {
               roles: ["user"],
             };
             
-            let response = "";
+            let response;
             
+            // When using an android emulator with expo-go 
+            // use 10.0.2.2 instead of localhost
             await axios
                 .post("http://localhost:8080/api/auth/signin", signin_data)
                 .then((res) => {
@@ -50,29 +51,20 @@ const LoginScreen = ({navigation}) => {
                     response = err.response.data.message;
                 });
               
-            response = response.toString();
-            if (response == "User Not found.") {
-                console.log("n-am gasit user");
-            } else if (response == "Invalid Password!") {
-                console.log("nu-i buna parola");
+            // response = response.toString();
+            if (response === "User Not found.") {
+                setUserEmail({ ...userEmail, error: "No account exists with this email" });
+            } else if (response === "Invalid Password!") {
+                setUserPassword({ ...userPassword, error: "Incorrect password" });
             } else {
-                const emailError = emailValidator(userEmail.value);
-                const passwordError = passwordValidator(userPassword.value);
-                
-                if (emailError || passwordError) {
-                    setUserEmail({ ...userEmail, error: emailError });
-                    setUserPassword({ ...userPassword, error: passwordError });
-                    return;
-                }
-              
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "BottomTabNavigator" }],
                 });
             }
-          } catch (e) {
-            console.log(e);
-          }
+        } catch (err) {
+            console.log(err);
+        }
     };
     
     return (

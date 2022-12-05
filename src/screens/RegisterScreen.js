@@ -18,16 +18,23 @@ import { passwordValidator } from '../utils/passwordValidator';
 import { nameValidator } from '../utils/nameValidator';
 
 export default function RegisterScreen({ navigation }) {
-    const [username, setUsername] = useState({ value: '', error: '' })
-    const [email, setEmail] = useState({ value: '', error: '' })
-    const [password, setPassword] = useState({ value: '', error: '' })
+    const [username, setUsername] = useState({ value: '', error: '' });
+    const [email, setEmail] = useState({ value: '', error: '' });
+    const [password, setPassword] = useState({ value: '', error: '' });
+    const [repeatedPassword, setRepeatedPassword] = useState({ value: '', error: '' });
 
     const onRegisterPressed = async () => {
+        // Check if passwords match
+        if(password.value !== repeatedPassword.value) {
+            setRepeatedPassword({ ...repeatedPassword, error: "Passwords do not match"});
+            return;
+        }
+
         const usernameError = nameValidator(username.value);
         const emailError = emailValidator(email.value);
         const passwordError = passwordValidator(password.value);
 
-        if (emailError || passwordError || nameError) {
+        if (emailError || passwordError || usernameError) {
           setUsername({ ...username, error: usernameError });
           setEmail({ ...email, error: emailError });
           setPassword({ ...password, error: passwordError });
@@ -44,36 +51,32 @@ export default function RegisterScreen({ navigation }) {
             
             let response;
             
-            const resp = await axios
-                .post(
-                    "http://localhost:8080/api/auth/signup",
-                    JSON.parse(JSON.stringify(signup_data))
-                )
+            // When using an android emulator with expo-go 
+            // use 10.0.2.2 instead of localhost
+            await axios
+                .post("http://localhost:8080/api/auth/signup", signup_data)
                 .then((res) => {
-                    response = res.data.message;
+                    response = res.data;
                 })
                 .catch((err) => {
                     response = err.response.data.message;
                 });
               
             if (response === "Failed! Username is already in use!") {
-                console.log("username e folosit");
+                setUsername({ ...username, error: "This username already exists" });
             } else if (response === "Failed! Email is already in use!") {
-                console.log("email e folosit");
+                setEmail({ ...email, error: "An account already uses this email" });
             } else {
+                console.log(response);
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "BottomTabNavigator" }],
                 });
             }
-            
-            // console.log(lol.data);
-          } catch (e) {
-                console.log(e);
-          }
-          
-          //Failed! Username is already in use!
-          //Failed! Email is already in use!
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -120,10 +123,10 @@ export default function RegisterScreen({ navigation }) {
             <TextInput
                 label="Confirm Password"
                 returnKeyType="done"
-                value={password.value}
-                onChangeText={(text) => setPassword({ value: text, error: '' })}
-                error={!!password.error}
-                errorText={password.error}
+                value={repeatedPassword.value}
+                onChangeText={(text) => setRepeatedPassword({ value: text, error: '' })}
+                error={!!repeatedPassword.error}
+                errorText={repeatedPassword.error}
                 secureTextEntry
             />
             
