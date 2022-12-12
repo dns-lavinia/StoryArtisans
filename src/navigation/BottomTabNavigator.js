@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from '@expo/vector-icons';
 import { StyleSheet } from "react-native";
+import axios from "axios";
 
 import { theme } from "../core/theme";
 
@@ -12,14 +13,46 @@ import ComposeStackNavigator from "./ComposeStackNavigator";
 import ReadStackNavigator from "./ReadStackNavigator";  
 import ProfileStackNavigator from "./ProfileStackNavigator";
 
+// Local atoms import
+import IconButton from '../components/atoms/IconButton';
+
 const Tab = createBottomTabNavigator();
 
-export default function BottomTabNavigator() {
+export default function BottomTabNavigator({ navigation }) {
+  const onLogOutPressed = async () => {
+      let response;
+      
+      // When using an android emulator with expo-go 
+      // use 10.0.2.2 instead of localhost
+      const resp = await axios
+          .post("http://10.0.2.2:8080/api/auth/signout")
+          .then((res) => {
+              response = res.data.message;
+          })
+          .catch((err) => {
+              response = err;
+          });
+
+      if (response == "You've been signed out!") {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "StartScreen" }],
+          });
+      }
+  };
+
   return (
     <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
           tabBarActiveTintColor: theme.colors.primary,
+          headerRight: () => (
+              <IconButton
+                    icon="logout"
+                    iconColor={theme.colors.firstColors}
+                    onPress={onLogOutPressed}
+              />
+          ),
         }}
         tabBarIcon={{
           focused: true,

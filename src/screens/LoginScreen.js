@@ -20,7 +20,6 @@ const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState({ value: "", error: "" });
     const [userPassword, setUserPassword] = useState({ value: "", error: "" });
     
-    // TODO: Handle possible input errors
     const onLoginPressed = async () => {
         const emailError = emailValidator(userEmail.value);
         const passwordError = passwordValidator(userPassword.value);
@@ -48,7 +47,9 @@ const LoginScreen = ({navigation}) => {
                     response = res.data;
                 })
                 .catch((err) => {
-                    response = err.response.data.message;
+                    // TODO: revert this later
+                    // response = err.response.data.message;
+                    response = "";
                 });
               
             // response = response.toString();
@@ -62,6 +63,12 @@ const LoginScreen = ({navigation}) => {
                     routes: [{ name: "BottomTabNavigator" }],
                 });
             }
+
+            // TODO: delete this later
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "BottomTabNavigator" }],
+            })
         } catch (err) {
             console.log(err);
         }
