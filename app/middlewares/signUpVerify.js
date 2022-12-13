@@ -53,12 +53,12 @@ checkRolesExisted = (req, res, next) => {
   next();
 };
 
-checkUsernameExisted = (req, res, next) => {
-  if (req.body.username) {
-    for (let i = 0; i < req.body.username.length; i++) {
-      if (!ROLES.includes(req.body.username[i])) {
+checkRolesdoesntExisted = (req, res, next) => {
+  if (req.body.roles) {
+    for (let i = 0; i < req.body.roles.length; i++) {
+      if (ROLES.includes(req.body.roles[i])) {
         res.status(400).send({
-          message: `Failed! Username ${req.body.username[i]} does not exist!`,
+          message: `ROLE never existed`,
         });
         return;
       }
