@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         width: '100%',
-        maxWidth: 340,
+        // maxWidth: 340,
     },
 });

@@ -8,30 +8,61 @@ import Button from "../components/atoms/Button";
 
 import { theme } from '../core/theme';
 
+let renderButtons = () => {
+    let tags = ['Action', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Poetry', 'S.F.'];
+    const buttons = [];
+
+    for(let i = 0; i < tags.length; i += 2) {
+
+        // If there is an odd number of tags, render the last row differently
+        if(i === (tags.length - 1)) {
+            buttons.push(
+                <View style={styles.buttonContainer} key={i}>
+                    <Button 
+                        key={i}
+                        style={styles.buttonStyle} 
+                        labelStyle={styles.buttonText}>
+                            {tags[i]}
+                    </Button>
+                </View>
+            );
+        } else {
+            buttons.push(
+                <View style={styles.buttonContainer} key={i}>
+                    <Button 
+                        key={i}
+                        style={styles.buttonStyle} 
+                        labelStyle={styles.buttonText}>
+                            {tags[i]}
+                    </Button>
+                    
+                    <Button 
+                        key={i+1}
+                        style={styles.buttonStyle}
+                        labelStyle={styles.buttonText}>
+                            {tags[i+1]}
+                    </Button>
+                </View>
+            );
+        }
+    }
+
+    return buttons;
+};
+
 export default function SearchScreen () {
     // I'm thinking I would get the labels themselves
     // from a database and create as many buttons as 
     // needed in alphabetical order 
 
     // for now the tags are hardoded
-    let tags = ['Action', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Poetry'];
     
     return (
         <DarkBackground style={styles.backStyle}>
             <Paragraph style={styles.ParagraphStyle}> Browse Tags </Paragraph> 
-            
-            <View style={styles.buttonContainer}>
-                <Button 
-                    style={styles.leftButtonStyle} 
-                    labelStyle={styles.buttonText}>
-                        Action
-                </Button>
-                
-                <Button 
-                    style={styles.rightButtonStyle}
-                    labelStyle={styles.buttonText}>
-                        Drama
-                </Button>
+
+            <View>
+                {renderButtons()}
             </View>
         </DarkBackground>
     );
@@ -50,21 +81,16 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        flex: 1,
+        flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignContent: 'center',
     },
 
-    leftButtonStyle: {
+    buttonStyle: {
         width: '45%',
-        height: 52,
-        backgroundColor: theme.colors.borderColor,
-        borderRadius: 5,
-    },
-
-    rightButtonStyle: {
-        width: '45%',
+        padding: 10,
+        margin: 10,
         height: 52,
         backgroundColor: theme.colors.borderColor,
         borderRadius: 5,
@@ -73,7 +99,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: theme.colors.darkText,
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 16,
         lineHeight: 26,
     }
 });
