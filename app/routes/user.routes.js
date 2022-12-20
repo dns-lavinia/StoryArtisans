@@ -15,4 +15,10 @@ module.exports = function (app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  app.get(
+    "/api/test/isModerator",
+    [authJwt.verifyToken, authJwt.isModerator],
+    controller.adminBoard
+  );
 };
