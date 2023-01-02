@@ -24,6 +24,7 @@
     "react-icons": "^4.6.0",
     "react-native": "0.69.6",
     "react-native-android-keyboard-adjust": "^1.2.0",
+    "react-native-element-dropdown": "^2.5.1",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-paper": "^4.12.5",

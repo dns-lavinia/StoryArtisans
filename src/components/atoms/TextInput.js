@@ -20,11 +20,11 @@ export default function TextInput({ errorText, description, ...props }) {
                 {...props}
             />
 
-        {/* If no error, then print the normal description */}
-        {description && !errorText ? (
-            <Text style={styles.description}>{description}</Text>
-        ) : null}
-        {errorText ? <Text style={styles.error}>{errorText}</Text> : null}    
+            {/* If no error, then print the normal description */}
+            {description && !errorText ? (
+                <Text style={styles.description}>{description}</Text>
+            ) : null}
+            {errorText ? <Text style={styles.error}>{errorText}</Text> : null}    
         </View>
     );
 }

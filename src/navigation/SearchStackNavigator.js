@@ -5,7 +5,6 @@ import { theme } from '../core/theme';
 
 // Screen imports
 import {
-  SearchResultScreen,
   SearchScreen
 } from '../screens';
 
@@ -15,10 +14,6 @@ export default function SearchStackNavigator() {
   return (
     <Stack.Navigator screenOptions={theme.screenOptionStyle}>
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      {/* <Stack.Screen 
-          name="SearchResultScreen" 
-          component={SearchResultScreen} 
-      /> */}
     </Stack.Navigator>
   );
 }

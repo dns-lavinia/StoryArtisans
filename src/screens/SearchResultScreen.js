@@ -80,18 +80,13 @@ const styles = StyleSheet.create({
 
     subtitleStyle: {
         fontSize: 19,
-        alignSelf: 'flex-start',
+        alignSelf: 'stretch',
         paddingBottom: 5,
         marginBottom: 25,
         width: '100%',
         backgroundColor: theme.colors.darkPurple
     },
-
-    rulerStyle: {
-        borderBottomColor: 'white',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-
+    
     bookRsltStyle: {
         padding: 5,
     },
