@@ -6,7 +6,7 @@ import { theme } from './core/theme';
 
 // Screen imports
 import {
-  LoginScreen, StartScreen, RegisterScreen
+  LoginScreen, StartScreen, RegisterScreen, SearchResultScreen
 } from './screens';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -29,6 +29,8 @@ export default function App() {
                     <RootStack.Screen name="LoginScreen" component={LoginScreen} />
                     <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
                     <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+                    <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
+                   
                 </RootStack.Navigator>
             </NavigationContainer>
         </Provider>

@@ -5,12 +5,19 @@ import { StyleSheet, View } from "react-native";
 import DarkBackground from "../components/atoms/DarkBackground";
 import Paragraph from "../components/atoms/Paragraph";
 import Button from "../components/atoms/Button";
+import { useNavigation } from "@react-navigation/native";
 
 import { theme } from '../core/theme';
 
 let renderButtons = () => {
     let tags = ['Action', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Poetry', 'S.F.'];
     const buttons = [];
+    const navigation = useNavigation();
+
+    const onTagPressed = (tag_name) => {
+        console.log("Retrieve books with the tag " + tag_name);
+        navigation.navigate('SearchResultScreen', {tagName: tag_name} );
+    };
 
     for(let i = 0; i < tags.length; i += 2) {
 
@@ -20,6 +27,7 @@ let renderButtons = () => {
                 <View style={styles.buttonContainer} key={i}>
                     <Button 
                         key={i}
+                        onPress={() => onTagPressed(tags[i])}
                         style={styles.buttonStyle} 
                         labelStyle={styles.buttonText}>
                             {tags[i]}
@@ -31,6 +39,7 @@ let renderButtons = () => {
                 <View style={styles.buttonContainer} key={i}>
                     <Button 
                         key={i}
+                        onPress={() => onTagPressed(tags[i])}
                         style={styles.buttonStyle} 
                         labelStyle={styles.buttonText}>
                             {tags[i]}
@@ -38,6 +47,8 @@ let renderButtons = () => {
                     
                     <Button 
                         key={i+1}
+                        name={tags[i+1]}
+                        onPress={() => onTagPressed(tags[i+1])}
                         style={styles.buttonStyle}
                         labelStyle={styles.buttonText}>
                             {tags[i+1]}
@@ -50,7 +61,7 @@ let renderButtons = () => {
     return buttons;
 };
 
-export default function SearchScreen () {
+export default function SearchScreen ({navigation}) {
     // I'm thinking I would get the labels themselves
     // from a database and create as many buttons as 
     // needed in alphabetical order 
@@ -62,7 +73,7 @@ export default function SearchScreen () {
             <Paragraph style={styles.ParagraphStyle}> Browse Tags </Paragraph> 
 
             <View>
-                {renderButtons()}
+                {renderButtons(navigation)}
             </View>
         </DarkBackground>
     );

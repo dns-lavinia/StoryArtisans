@@ -16,6 +16,7 @@ export const theme = {
         underlineColor: "#494949",
         dark: "#000000",
         borderColor: "#e5e5e5",
+        darkPurple: "#a288a6"
     },
 
     screenOptionStyle: {
