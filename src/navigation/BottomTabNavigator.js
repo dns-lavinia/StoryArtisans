@@ -26,33 +26,8 @@ export default function BottomTabNavigator({ navigation }) {
     const [state, setState] = useContext(AuthContext);
 
     const onLogOutPressed = async () => {
-        let response;
-
         setState({ token: "", user: null });
         await AsyncStorage.removeItem("auth-rn");
-        navigation.navigate("StartScreen");
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{ name: "StartScreen" }],
-        // });
-        
-        // When using an android emulator with expo-go 
-        // use 10.0.2.2 instead of localhost
-        // const resp = await axios
-        //     .post("http://10.0.2.2:8080/api/auth/signout")
-        //     .then((res) => {
-        //         response = res.data.message;
-        //     })
-        //     .catch((err) => {
-        //         response = err;
-        //     });
-
-        // if (response == "You've been signed out!") {
-        //     navigation.reset({
-        //       index: 0,
-        //       routes: [{ name: "StartScreen" }],
-        //     });
-        // }
     };
 
     return (

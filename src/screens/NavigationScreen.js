@@ -24,13 +24,18 @@ export default function NavigationScreen() {
             }}
         >   
             {authenticated?
-            <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />: (
+            (   <>
+                    <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+                    <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
+                    <RootStack.Screen name="WriteScreen" component={WriteScreen} />
+                </>
+            )
+            : (
                 <>
                     <RootStack.Screen name="StartScreen" component={StartScreen} />
                     <RootStack.Screen name="LoginScreen" component={LoginScreen} />
                     <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
-                    <RootStack.Screen name="WriteScreen" component={WriteScreen} />
+                    
                 </>
             )}
         </RootStack.Navigator>

@@ -15,7 +15,7 @@ let renderButtons = () => {
     const navigation = useNavigation();
 
     const onTagPressed = (tag_name) => {
-        console.log("Retrieve books with the tag " + tag_name);
+        // console.log("Retrieve books with the tag " + tag_name);
         navigation.navigate('SearchResultScreen', {tagName: tag_name} );
     };
 

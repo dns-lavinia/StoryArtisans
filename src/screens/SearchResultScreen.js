@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { StyleSheet, RefreshControl, View, Image } from "react-native";
+import axios from "axios";
 
-import DarkBackground from "../components/atoms/DarkBackground";
+import DarkBackgroundS from "../components/atoms/DarkBackgroundS";
 import Header from "../components/atoms/Header";
 import IconButton from "../components/atoms/IconButton";
 import Button from "../components/atoms/Button";
@@ -9,8 +10,7 @@ import Button from "../components/atoms/Button";
 import { theme } from '../core/theme';
 
 // local context import 
-// import { BookContext } from "../context/book";
-import axios from "axios";
+import { BookContext } from "../context/book";
 
 export default function SearchResultScreen ({ route, navigation }) {
     const [books, setBooks] = useContext(BookContext);
@@ -22,7 +22,8 @@ export default function SearchResultScreen ({ route, navigation }) {
     const fetchBooks = async () => {
         // to get the parameters passed in the SearchScreen -> route.params
         var tag = {tag: route.params.tagName};
-        
+        console.log(tag);
+
         // const { bookData } = await axios.get("http://10.0.2.2:8080/api/books", tag);
     };
 
@@ -36,7 +37,8 @@ export default function SearchResultScreen ({ route, navigation }) {
     // pulled downwards
 
     return (
-        <DarkBackground style={styles.backStyle}>
+        <DarkBackgroundS style={styles.backStyle}>
+            {/* Header and title parts */}
             <View style={styles.headerStyle}>
                 <IconButton
                         icon="arrow-left"
@@ -49,7 +51,7 @@ export default function SearchResultScreen ({ route, navigation }) {
             </View>
             <Button style={styles.subtitleStyle}>Tag: {route.params["tagName"]}</Button>
 
-
+            {/* Actual book rendering part */}
             <View style={styles.bookRsltStyle}>
                 <View style={styles.bookStyle}>
                     <Image source={require('../assets/images/no_cover_book.png')}/>
@@ -64,7 +66,7 @@ export default function SearchResultScreen ({ route, navigation }) {
                 </View>
             </View>
 
-        </DarkBackground>
+        </DarkBackgroundS>
     );
 }
 
@@ -73,10 +75,6 @@ const styles = StyleSheet.create({
         flex: 0,
         paddingTop: 25,
         width: '100%',
-        // maxWidth: 340,
-        // alignSelf: 'center',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
 
     headerStyle: {
@@ -85,7 +83,6 @@ const styles = StyleSheet.create({
     },
 
     titleStyle: {
-        // alignContent: "right",
         fontSize: 22,
         alignSelf: "center",
         textAlign: "right",
