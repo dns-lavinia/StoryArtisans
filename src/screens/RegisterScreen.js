@@ -55,18 +55,27 @@ export default function RegisterScreen({ navigation }) {
             };
             
             let response;
+            let config = {
+                validateStatus: function (status) {
+                    return status < 500; // Resolve only if the status code is less than 500
+                }
+            }
             
             // When using an android emulator with expo-go 
             // use 10.0.2.2 instead of localhost
             await axios
-                .post("http://10.0.2.2:8080/api/auth/signup", signup_data)
+                .post("http://10.0.2.2:8080/api/auth/signup", signup_data, config)
                 .then((res) => {
-                    response = res.data;
+                    if(JSON.stringify(res.status) === "400") {
+                        response = res.data.message;
+                    } else {
+                        response = JSON.stringify(res.data);
+                    }
                 })
                 .catch((err) => {
                     response = err.response.data.message;
                 });
-              
+            
             if (response === "Failed! Username is already in use!") {
                 setUsername({ ...username, error: "This username already exists" });
             } else if (response === "Failed! Email is already in use!") {
@@ -76,9 +85,11 @@ export default function RegisterScreen({ navigation }) {
 
                 await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
 
+                alert("Sign Up was successful!\nYou can log in now to start using the app.");
+
                 navigation.reset({
                     index: 0,
-                    routes: [{ name: "BottomTabNavigator" }],
+                    routes: [{ name: "StartScreen" }],
                 });
             }
         } catch (e) {

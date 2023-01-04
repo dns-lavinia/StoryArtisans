@@ -54,8 +54,6 @@ export default function LoginScreen({ navigation }) {
             await axios
                 .post("http://10.0.2.2:8080/api/auth/signin", signin_data, config)
                 .then((res) => {
-                    response = JSON.stringify(res.data);
-
                     if(JSON.stringify(res.status) === "401") {
                         response = res.data.message;
                     } else {
