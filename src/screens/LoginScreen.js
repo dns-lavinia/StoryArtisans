@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text } from 'react-native-paper';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import { theme } from '../core/theme';
@@ -16,9 +17,13 @@ import BackButton from '../components/atoms/BackButton';
 import { emailValidator } from '../utils/emailValidator';
 import { passwordValidator } from '../utils/passwordValidator';
 
-const LoginScreen = ({navigation}) => {
+// context import 
+import { AuthContext } from "../context/auth";
+
+export default function LoginScreen({ navigation }) {
     const [userEmail, setUserEmail] = useState({ value: "", error: "" });
     const [userPassword, setUserPassword] = useState({ value: "", error: "" });
+    const [state, setState] = useContext(AuthContext);
     
     const onLoginPressed = async () => {
         const emailError = emailValidator(userEmail.value);
@@ -36,41 +41,57 @@ const LoginScreen = ({navigation}) => {
               password: userPassword.value,
               roles: ["user"],
             };
-            
+
             let response;
+            let config = {
+                validateStatus: function (status) {
+                    return status < 500; // Resolve only if the status code is less than 500
+                }
+            }
             
             // When using an android emulator with expo-go 
             // use 10.0.2.2 instead of localhost
             await axios
-                .post("http://localhost:8080/api/auth/signin", signin_data)
+                .post("http://10.0.2.2:8080/api/auth/signin", signin_data, config)
                 .then((res) => {
-                    response = res.data;
+                    response = JSON.stringify(res.data);
+
+                    if(JSON.stringify(res.status) === "401") {
+                        response = res.data.message;
+                    } else {
+                        response = JSON.stringify(res.data);
+                    }
                 })
                 .catch((err) => {
-                    // TODO: revert this later
-                    // response = err.response.data.message;
-                    response = "";
+                    if(err.response) {
+                        console.log(err.response);
+                    } else if(err.request) {
+                        console.log(err.request);
+                    } else {
+                        console.log('Error:', err.message);
+                    }
+
+                    console.log(err.config);
+                    response = null;
                 });
-              
-            // response = response.toString();
+    
             if (response === "User Not found.") {
                 setUserEmail({ ...userEmail, error: "No account exists with this email" });
             } else if (response === "Invalid Password!") {
                 setUserPassword({ ...userPassword, error: "Incorrect password" });
-            } else {
+            } else if( response != null) {
+                setState(response);
+
+                await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "BottomTabNavigator" }],
                 });
             }
 
-            // TODO: delete this later
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "BottomTabNavigator" }],
-            })
         } catch (err) {
-            console.log(err);
+            console.log('Signin error:', err);
         }
     };
     
@@ -134,6 +155,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: theme.colors.primary,
     },
-})
-
-export default LoginScreen;
+});

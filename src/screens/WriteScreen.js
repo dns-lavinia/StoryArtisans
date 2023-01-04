@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, SafeAreaView, StatusBar, Text } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 import DarkBackgroundS from "../components/atoms/DarkBackgroundS";
 import IconButton from "../components/atoms/IconButton";
@@ -9,11 +10,73 @@ import DropdownComponent from "../components/atoms/Dropdown";
 
 import { theme } from '../core/theme';
 import Button from "../components/atoms/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function WriteScreen ({ navigation }) {
     const [bookTitle, setBookTitle] = useState({ value: '', error: '' });
     const [bookTag, setBookTag] = useState({ value: '', error: '' });
     const [bookContent, setBookContent] = useState({ value: '', error: '' });
+    const [uploadImage, setUploadImage] = useState("");
+    const [showImgFlag, setShowImgFlag] = useState(false);
+
+    // Set the new tag selected from the dropdown
+    const setNewTag = (item) => {
+        setBookTag({ value: item.value, error: '' });    
+    }
+
+    // handler for the upload of book cover picture
+    const handleUpload = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if(permissionResult.granted === false) {
+            alert("Camera access is required.");
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64: true,
+        });
+
+        if(pickerResult.cancelled === true) {
+            return;
+        }
+
+        let base64Image = `data:image/jpg;base64,${pickerResult.base64}`;
+        setUploadImage(base64Image);
+        setShowImgFlag(true);
+    };
+
+    const handleStoryPost = async () => {
+        let storeData = await AsyncStorage.getItem("auth-rn");
+        const parsed = JSON.parse(storeData);
+
+        // get the username
+        let uid = JSON.parse(parsed).user;
+
+        // get the story title
+        let title = bookTitle.value;
+
+        // get the story genre tag
+        let tag = bookTag.value;
+
+        // get the story text
+        let storyText = bookContent.value;
+
+        // get the story cover 
+        let img = uploadImage;
+
+        // When using an android emulator with expo-go 
+        // use 10.0.2.2 instead of localhost
+        // NOTE: this post request will have to be placed at the end alongside other data
+        // const { data } = await axios.post("http://localhost:8080/api/compose/upload-image", {
+        //     image: base64Image,
+        //     user: parsed.user
+        // });
+
+        // console.log("UPLOAD RESPONSE => ", data);
+    }
     
     return (
         <DarkBackgroundS style={styles.backStyle}>
@@ -66,13 +129,26 @@ export default function WriteScreen ({ navigation }) {
                     />
 
                     {/* Drowpdown menu so the user can choose the book genre */}
-                    <DropdownComponent/>
+                    <DropdownComponent setNewTag={(item) => setNewTag(item)}/>
 
                     {/* Button to upload a book cover image */}
-                    <Button style={styles.btnStyle} textStyle={styles.pictStyle}> Upload cover picture </Button>
+                    <Button 
+                        style={styles.btnStyle} textStyle={styles.pictStyle}
+                        onPress={handleUpload}> 
+                        Upload cover picture 
+                    </Button>
+
+                    {showImgFlag? 
+                        <Text style={{color: theme.colors.text, paddingBottom: 10}}>
+                            Successfully uploaded image.
+                        </Text> 
+                        : ""
+                    }
 
                     {/* Button that posts the story */}
-                    <Button style={{backgroundColor: theme.colors.darkPurple, width: "50%"}}>
+                    <Button 
+                        style={{backgroundColor: theme.colors.darkPurple, width: "50%"}}
+                        onPress={handleStoryPost}>
                         POST
                     </Button>
                 </ScrollView>

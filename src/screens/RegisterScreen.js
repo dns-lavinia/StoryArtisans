@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from "react-native-paper";
 import axios from 'axios';
 
@@ -17,11 +18,15 @@ import { emailValidator } from '../utils/emailValidator';
 import { passwordValidator } from '../utils/passwordValidator';
 import { nameValidator } from '../utils/nameValidator';
 
+// context import 
+import { AuthContext } from "../context/auth";
+
 export default function RegisterScreen({ navigation }) {
     const [username, setUsername] = useState({ value: '', error: '' });
     const [email, setEmail] = useState({ value: '', error: '' });
     const [password, setPassword] = useState({ value: '', error: '' });
     const [repeatedPassword, setRepeatedPassword] = useState({ value: '', error: '' });
+    const [state, setState] = useContext(AuthContext);
 
     const onRegisterPressed = async () => {
         // Check if passwords match
@@ -54,7 +59,7 @@ export default function RegisterScreen({ navigation }) {
             // When using an android emulator with expo-go 
             // use 10.0.2.2 instead of localhost
             await axios
-                .post("http://localhost:8080/api/auth/signup", signup_data)
+                .post("http://10.0.2.2:8080/api/auth/signup", signup_data)
                 .then((res) => {
                     response = res.data;
                 })
@@ -67,7 +72,9 @@ export default function RegisterScreen({ navigation }) {
             } else if (response === "Failed! Email is already in use!") {
                 setEmail({ ...email, error: "An account already uses this email" });
             } else {
-                console.log(response);
+                setState(response);
+
+                await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
 
                 navigation.reset({
                     index: 0,

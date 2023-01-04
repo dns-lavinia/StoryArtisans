@@ -5,16 +5,16 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { theme } from '../../core/theme';
 
 const data = [
-    { label: 'Action', value: '1' },
-    { label: 'Drama', value: '2' },
-    { label: 'Fantasy', value: '3' },
-    { label: 'Horror', value: '4' },
-    { label: 'Mystery', value: '5' },
-    { label: 'Poetry', value: '6' },
-    { label: 'S.F.', value: '7' },
+    { label: 'Action', value: 'Action' },
+    { label: 'Drama', value: 'Drama' },
+    { label: 'Fantasy', value: 'Fantasy' },
+    { label: 'Horror', value: 'Horror' },
+    { label: 'Mystery', value: 'Mystery' },
+    { label: 'Poetry', value: 'Poetry' },
+    { label: 'S.F.', value: 'S.F.' },
 ];
 
-export default function DropdownComponent() {
+export default function DropdownComponent({ ...props }) {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -38,10 +38,7 @@ export default function DropdownComponent() {
                 value={value}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                setValue(item.value);
-                setIsFocus(false);
-                }}
+                onChange={props.setNewTag}
             />
         </View>
     );

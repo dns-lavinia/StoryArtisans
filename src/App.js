@@ -11,6 +11,9 @@ import {
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 
+// context import 
+import { AuthProvider } from './context/auth';
+
 // Create a stack that will keep the screens
 const RootStack = createStackNavigator();
 
@@ -19,20 +22,21 @@ export default function App() {
     return (
         <Provider theme={theme}>
           <NavigationContainer>
-                <RootStack.Navigator
-                    initialRouteName="StartScreen"
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                >   
-                    <RootStack.Screen name="StartScreen" component={StartScreen} />
-                    <RootStack.Screen name="LoginScreen" component={LoginScreen} />
-                    <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
-                    <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
-                    <RootStack.Screen name="WriteScreen" component={WriteScreen} />
-                   
-                </RootStack.Navigator>
+                <AuthProvider>
+                    <RootStack.Navigator
+                        initialRouteName="StartScreen"
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >   
+                        <RootStack.Screen name="StartScreen" component={StartScreen} />
+                        <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+                        <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
+                        <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+                        <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
+                        <RootStack.Screen name="WriteScreen" component={WriteScreen} />
+                    </RootStack.Navigator>
+                </AuthProvider>
             </NavigationContainer>
         </Provider>
     );
