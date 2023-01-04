@@ -76,6 +76,10 @@ export default function WriteScreen ({ navigation }) {
         // });
 
         // console.log("UPLOAD RESPONSE => ", data);
+        setTimeout(() => {
+            alert("Story posted");
+            navigation.navigate("ComposeScreen");
+        }, 500);
     }
     
     return (

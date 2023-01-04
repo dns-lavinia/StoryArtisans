@@ -79,13 +79,7 @@ export default function LoginScreen({ navigation }) {
                 setUserPassword({ ...userPassword, error: "Incorrect password" });
             } else if( response != null) {
                 setState(response);
-
                 await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
-
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: "BottomTabNavigator" }],
-                });
             }
 
         } catch (err) {

@@ -81,10 +81,6 @@ export default function RegisterScreen({ navigation }) {
             } else if (response === "Failed! Email is already in use!") {
                 setEmail({ ...email, error: "An account already uses this email" });
             } else {
-                setState(response);
-
-                await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
-
                 alert("Sign Up was successful!\nYou can log in now to start using the app.");
 
                 navigation.reset({

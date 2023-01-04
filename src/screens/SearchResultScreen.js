@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, RefreshControl, View, Image } from "react-native";
 
 import DarkBackground from "../components/atoms/DarkBackground";
@@ -8,9 +8,23 @@ import Button from "../components/atoms/Button";
 
 import { theme } from '../core/theme';
 
+// local context import 
+// import { BookContext } from "../context/book";
+import axios from "axios";
+
 export default function SearchResultScreen ({ route, navigation }) {
-    // to get the parameters passed in the SearchScreen -> route.params
-    console.log(route.params);
+    const [books, setBooks] = useContext(BookContext);
+
+    useEffect(() =>{
+        fetchBooks();
+    }, []);
+
+    const fetchBooks = async () => {
+        // to get the parameters passed in the SearchScreen -> route.params
+        var tag = {tag: route.params.tagName};
+        
+        // const { bookData } = await axios.get("http://10.0.2.2:8080/api/books", tag);
+    };
 
     // based on the tag, fetch books
 
