@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, RefreshControl, View, Image } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
+import { Text } from "react-native-paper";
 
 import DarkBackgroundS from "../components/atoms/DarkBackgroundS";
 import Header from "../components/atoms/Header";
@@ -15,6 +17,9 @@ import { BookContext } from "../context/book";
 export default function SearchResultScreen ({ route, navigation }) {
     const [books, setBooks] = useContext(BookContext);
 
+    let fakebooks = ([  {id: 1, title: "book1", username: "User1"}, 
+                        {id: 2, title: "book2", username: "User2"}]);
+
     useEffect(() =>{
         fetchBooks();
     }, []);
@@ -25,6 +30,7 @@ export default function SearchResultScreen ({ route, navigation }) {
         console.log(tag);
 
         // const { bookData } = await axios.get("http://10.0.2.2:8080/api/books", tag);
+        // setBooks(bookData);
     };
 
     // based on the tag, fetch books
@@ -35,6 +41,13 @@ export default function SearchResultScreen ({ route, navigation }) {
 
     // have to ad onRefresh method that will fetch posts when the screen is
     // pulled downwards
+
+    const viewBook = (item) => {
+        navigation.navigate("BookViewScreen", {
+            title: item.title,
+            author: item.username,
+        });
+    }
 
     return (
         <DarkBackgroundS style={styles.backStyle}>
@@ -52,19 +65,21 @@ export default function SearchResultScreen ({ route, navigation }) {
             <Button style={styles.subtitleStyle}>Tag: {route.params["tagName"]}</Button>
 
             {/* Actual book rendering part */}
-            <View style={styles.bookRsltStyle}>
-                <View style={styles.bookStyle}>
-                    <Image source={require('../assets/images/no_cover_book.png')}/>
-                </View>
+            <ScrollView style={styles.bookRsltStyle}>
+                {fakebooks && fakebooks.map(item => (
+                    // Add key based on 
+                    <TouchableOpacity key={item.id} onPress={() => viewBook(item)}>
+                        <View key={item.id} style={styles.bookStyle}>
+                            <Image source={require('../assets/images/no_cover_book.png')}/>
 
-                <View style={styles.bookStyle}>
-                    <Image source={require('../assets/images/no_cover_book.png')}/>
-                </View>
-
-                <View style={styles.bookStyle}>
-                    <Image source={require('../assets/images/no_cover_book.png')}/>
-                </View>
-            </View>
+                            <View style={styles.bookInfo}>
+                                <Text style={styles.info}>Title: {item.title}</Text>
+                                <Text style={styles.info}>Author: {item.username}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
 
         </DarkBackgroundS>
     );
@@ -93,7 +108,7 @@ const styles = StyleSheet.create({
         fontSize: 19,
         alignSelf: 'stretch',
         paddingBottom: 5,
-        marginBottom: 25,
+        marginBottom: 20,
         width: '100%',
         backgroundColor: theme.colors.darkPurple
     },
@@ -103,6 +118,15 @@ const styles = StyleSheet.create({
     },
 
     bookStyle: {
-        paddingBottom: 30,
+        paddingBottom: 25,
+        flexDirection: "row",
+    },
+
+    bookInfo: {
+        padding: 10,
+    }, 
+
+    info: {
+        paddingBottom: 10,
     }
 });

@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { ImageBackground, StyleSheet, ScrollView } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import { theme } from '../../core/theme';
 
@@ -9,10 +9,9 @@ export default function DarkBackgroundS({ children }) {
         <ImageBackground
             style={styles.background}
         >
-    
-            <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.container}>
+            <SafeAreaView style={styles.container}>
                 {children}
-            </ScrollView>
+            </SafeAreaView>
     
         </ImageBackground>
     );
@@ -25,14 +24,11 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.secondary,
     },
 
-    scrollStyle: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-    },
-
     container: {
+        flex: 1,
         paddingTop: 25,
-        padding: 20,
+        padding: 10,
         width: '100%',
+        maxWidth: 360,
     }
 });

@@ -15,7 +15,7 @@ const data = [
 ];
 
 export default function DropdownComponent({ ...props }) {
-    const [value, setValue] = useState(null);
+    const [tag, setTag] = useState({ value: '', error: '' });
     const [isFocus, setIsFocus] = useState(false);
 
     return (
@@ -35,7 +35,7 @@ export default function DropdownComponent({ ...props }) {
                 valueField="value"
                 placeholder={!isFocus ? 'Select item' : '...'}
                 searchPlaceholder="Search..."
-                value={value}
+                value={tag.value}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={props.setNewTag}

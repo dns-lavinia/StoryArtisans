@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // Screen imports
 import {
-    LoginScreen, StartScreen, RegisterScreen, SearchResultScreen, WriteScreen
+    LoginScreen, StartScreen, RegisterScreen, SearchResultScreen, WriteScreen, BookViewScreen
 } from '.';
 
 import BottomTabNavigator from '../navigation/BottomTabNavigator';
@@ -28,6 +28,7 @@ export default function NavigationScreen() {
                     <RootStack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
                     <RootStack.Screen name="SearchResultScreen" component={SearchResultScreen} />
                     <RootStack.Screen name="WriteScreen" component={WriteScreen} />
+                    <RootStack.Screen name="BookViewScreen" component={BookViewScreen} />
                 </>
             )
             : (

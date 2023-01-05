@@ -8,3 +8,4 @@ export { default as ReadScreen } from './ReadScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as SearchResultScreen} from './SearchResultScreen';
 export { default as WriteScreen} from './WriteScreen';
+export { default as BookViewScreen} from './BookViewScreen';

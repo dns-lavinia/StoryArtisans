@@ -19,6 +19,10 @@ export default function WriteScreen ({ navigation }) {
     const [uploadImage, setUploadImage] = useState("");
     const [showImgFlag, setShowImgFlag] = useState(false);
 
+    // Flags used to display a message in case of empty/unselected tag/image
+    const [tagErrorFlag, setTagErrorFlag] = useState(false);
+    const [imgErrorFlag, setImgErrorFlag] = useState(false);
+
     // Set the new tag selected from the dropdown
     const setNewTag = (item) => {
         setBookTag({ value: item.value, error: '' });    
@@ -52,6 +56,11 @@ export default function WriteScreen ({ navigation }) {
         let storeData = await AsyncStorage.getItem("auth-rn");
         const parsed = JSON.parse(storeData);
 
+        // Make sure that previous error messages disappear 
+        // if the field is not empty, for tag or image
+        setTagErrorFlag(false);
+        setImgErrorFlag(false);
+
         // get the username
         let uid = JSON.parse(parsed).user;
 
@@ -67,6 +76,29 @@ export default function WriteScreen ({ navigation }) {
         // get the story cover 
         let img = uploadImage;
 
+        // Error checks
+        if(title === "" || title === null) {
+            setBookTitle({ ...bookTitle, error: "Title must not be empty"});
+            return;
+        }
+
+        if(storyText === "" || storyText === null) {
+            setBookContent({ ...bookContent, error: "Your story must not be empty"});
+            return;
+        }
+
+        // TODO: print a message when this happens
+        if(tag === "" || tag === null) {
+            setTagErrorFlag(true);
+            return;
+        }
+
+        if(img === "" || img === null) {
+            setImgErrorFlag(true);
+            return;
+        }
+
+        
         // When using an android emulator with expo-go 
         // use 10.0.2.2 instead of localhost
         // NOTE: this post request will have to be placed at the end alongside other data
@@ -95,69 +127,80 @@ export default function WriteScreen ({ navigation }) {
                 <Header style={styles.titleStyle}> Your story </Header>
             </View>
 
-            <SafeAreaView style={styles.container}>
-                <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.chldStyle}>
-                    <TextInput
-                        label="Title"
-                        returnKeyType="next"
-                        value={bookTitle.value}
-                        onChangeText={(text) => setBookTitle({ value: text, error: '' })}
-                        error={!!bookTitle.error}
-                        errorText={bookTitle.error}
-                        style={styles.inputStyle}
-                        theme={{
-                            ...TextInput.theme, 
-                            roundness: 15, 
-                            colors: {text: theme.colors.text},
-                        }}
-                        activeOutlineColor={theme.colors.text}
-                    />
-                    
-                    {/* Box for user to write the story */}
-                    <Text style={styles.textStyle}> Write your story below: </Text>
-                    <TextInput
-                        multiline={true}
-                        returnKeyType="next"
-                        value={bookContent.value}
-                        onChangeText={(text) => setBookContent({ value: text, error: '' })}
-                        error={!!bookContent.error}
-                        errorText={bookContent.error}
-                        style={styles.contentBoxStyle}
-                        theme={{
-                            ...TextInput.theme, 
-                            roundness: 15, 
-                            colors: {text: theme.colors.text},
-                            
-                        }}
-                        activeOutlineColor={theme.colors.text}
-                    />
+            <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.chldStyle}>
+                <TextInput
+                    label="Title"
+                    returnKeyType="next"
+                    value={bookTitle.value}
+                    onChangeText={(text) => setBookTitle({ value: text, error: '' })}
+                    error={!!bookTitle.error}
+                    errorText={bookTitle.error}
+                    style={styles.inputStyle}
+                    theme={{
+                        ...TextInput.theme, 
+                        roundness: 15, 
+                        colors: {text: theme.colors.text},
+                    }}
+                    activeOutlineColor={theme.colors.text}
+                />
+                
+                {/* Box for user to write the story */}
+                <Text style={styles.textStyle}> Write your story below: </Text>
+                <TextInput
+                    multiline={true}
+                    returnKeyType="next"
+                    value={bookContent.value}
+                    onChangeText={(text) => setBookContent({ value: text, error: '' })}
+                    error={!!bookContent.error}
+                    errorText={bookContent.error}
+                    style={styles.contentBoxStyle}
+                    theme={{
+                        ...TextInput.theme, 
+                        roundness: 15, 
+                        colors: {text: theme.colors.text},
+                        
+                    }}
+                    activeOutlineColor={theme.colors.text}
+                />
 
-                    {/* Drowpdown menu so the user can choose the book genre */}
-                    <DropdownComponent setNewTag={(item) => setNewTag(item)}/>
+                {/* Drowpdown menu so the user can choose the book genre */}
+                <DropdownComponent setNewTag={(item) => setNewTag(item)}/>
 
-                    {/* Button to upload a book cover image */}
-                    <Button 
-                        style={styles.btnStyle} textStyle={styles.pictStyle}
-                        onPress={handleUpload}> 
-                        Upload cover picture 
-                    </Button>
+                {tagErrorFlag? 
+                    <Text style={{color: "red", paddingBottom: 10}}>
+                        Your story must have a genre.
+                    </Text> 
+                    : ""
+                }
 
-                    {showImgFlag? 
-                        <Text style={{color: theme.colors.text, paddingBottom: 10}}>
-                            Successfully uploaded image.
-                        </Text> 
-                        : ""
-                    }
+                {/* Button to upload a book cover image */}
+                <Button 
+                    style={styles.btnStyle} textStyle={styles.pictStyle}
+                    onPress={handleUpload}> 
+                    Upload cover picture 
+                </Button>
 
-                    {/* Button that posts the story */}
-                    <Button 
-                        style={{backgroundColor: theme.colors.darkPurple, width: "50%"}}
-                        onPress={handleStoryPost}>
-                        POST
-                    </Button>
-                </ScrollView>
-            </SafeAreaView>
+                {showImgFlag? 
+                    <Text style={{color: theme.colors.text, paddingBottom: 10}}>
+                        Successfully uploaded image.
+                    </Text> 
+                    : ""
+                }
 
+                {imgErrorFlag? 
+                    <Text style={{color: "red", paddingBottom: 10}}>
+                        An image must be selected.
+                    </Text> 
+                    : ""
+                }   
+
+                {/* Button that posts the story */}
+                <Button 
+                    style={{backgroundColor: theme.colors.darkPurple, width: "50%"}}
+                    onPress={handleStoryPost}>
+                    POST
+                </Button>
+            </ScrollView>
         </DarkBackgroundS>
     );
 }
@@ -202,7 +245,6 @@ const styles = StyleSheet.create({
     },
 
     scrollStyle: {
-        marginHorizontal: 10,
         centerContent: true
     },
 

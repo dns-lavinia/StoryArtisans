@@ -18,6 +18,7 @@ export const theme = {
         borderColor: "#e5e5e5",
         darkPurple: "#a288a6",
         darkBox: "#424242",
+        darkPurpleBox: "#766273",
     },
 
     screenOptionStyle: {
