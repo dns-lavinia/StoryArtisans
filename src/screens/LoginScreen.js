@@ -78,10 +78,9 @@ export default function LoginScreen({ navigation }) {
             } else if (response === "Invalid Password!") {
                 setUserPassword({ ...userPassword, error: "Incorrect password" });
             } else if( response != null) {
-                setState(response);
-                await AsyncStorage.setItem("auth-rn", JSON.stringify(response));
+                setState(JSON.parse(response));
+                await AsyncStorage.setItem("auth-rn", response);
             }
-
         } catch (err) {
             console.log('Signin error:', err);
         }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 
 // Local atom imports
@@ -7,7 +7,6 @@ import IconButton from "../components/atoms/IconButton";
 import Button from "../components/atoms/Button";
 
 import { theme } from '../core/theme';
-import { useEffect } from "react";
 
 export default function BookViewScreen ({route, navigation}) {
     const [story, setStory] = useState("");
@@ -66,7 +65,7 @@ export default function BookViewScreen ({route, navigation}) {
                 </View>
                     
                 <Text style={styles.info}>Title: {route.params.title}</Text>
-                <Text style={styles.info}>By {route.params.author}</Text> 
+                <Text style={[styles.info, {fontSize: 15}]}>By {route.params.author}</Text> 
             </View>
 
             <View style={styles.rulerStyle}/>

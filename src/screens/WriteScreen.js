@@ -62,7 +62,7 @@ export default function WriteScreen ({ navigation }) {
         setImgErrorFlag(false);
 
         // get the username
-        let uid = JSON.parse(parsed).user;
+        let uid = parsed.user.id;
 
         // get the story title
         let title = bookTitle.value;
@@ -97,7 +97,6 @@ export default function WriteScreen ({ navigation }) {
             setImgErrorFlag(true);
             return;
         }
-
         
         // When using an android emulator with expo-go 
         // use 10.0.2.2 instead of localhost

@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState} from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from "react-native-paper";
 import axios from 'axios';
 
@@ -18,15 +17,12 @@ import { emailValidator } from '../utils/emailValidator';
 import { passwordValidator } from '../utils/passwordValidator';
 import { nameValidator } from '../utils/nameValidator';
 
-// context import 
-import { AuthContext } from "../context/auth";
 
 export default function RegisterScreen({ navigation }) {
     const [username, setUsername] = useState({ value: '', error: '' });
     const [email, setEmail] = useState({ value: '', error: '' });
     const [password, setPassword] = useState({ value: '', error: '' });
     const [repeatedPassword, setRepeatedPassword] = useState({ value: '', error: '' });
-    const [state, setState] = useContext(AuthContext);
 
     const onRegisterPressed = async () => {
         // Check if passwords match

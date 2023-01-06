@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
             if(res.status === 401 && res.config && !res.config.__isRetryRequest) {
                 await AsyncStorage.removeItem("auth-rn");
-                setState({ user: null, token: "" });
+                setState({ user: null , token: ""});
                 navigation.navigate("StartScreen");
             }
         }
@@ -41,11 +41,18 @@ const AuthProvider = ({ children }) => {
                 }
 
                 const parsed = JSON.parse(data);
+
                 if(parsed === null) {
                     console.log("parsed is null");
                     return;
                 } else {
-                    setState({ ...state, user: parsed.user, token: parsed.token});
+                    setState({ ...state, 
+                                user: {
+                                    id: parsed.user.id,
+                                    username: parsed.user.username,
+                                    email: parsed.user.email
+                                }, 
+                                token: parsed.token,});
                 }
             };
     
