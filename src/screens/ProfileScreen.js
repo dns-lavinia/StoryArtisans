@@ -16,9 +16,10 @@ export default function ProfileScreen ({ navigation }) {
     const [readingList, setReadingList] = useState(0);
     const [works, setWorks] = useState(0);
     const [books, setBooks] = useContext(BookContext);
+    var key_id = 0;
 
-    let fakebooks = ([  {title: "book1"}, 
-                        {title: "book2"}]);
+    let fakebooks = ([  {title: "book1", id: state.user.id, username: state.user.username}, 
+                        {title: "book2", id: state.user.id, username: state.user.username}]);
 
     useEffect(() => {
         if (state) {
@@ -53,8 +54,9 @@ export default function ProfileScreen ({ navigation }) {
 
     const viewBook = (item) => {
         navigation.navigate("BookViewScreen", {
-            title: item.title,
+            id: item.id,
             author: item.username,
+            title: item.title,
         });
     }
 
@@ -90,15 +92,15 @@ export default function ProfileScreen ({ navigation }) {
             <View style={styles.rulerStyle}/>
             <View style={styles.rulerStyle2}/>
 
-            <View style={[styles.container, {paddingTop: 0, margin: 0, flex: 0, marginTop: 15, paddingBottom: 5}]}>
-                <Text style={styles.subHeaderStyle}> Your work</Text>
+            <View style={[styles.container, {paddingTop: 0, margin: 0, flex: 0, marginTop: 10, paddingBottom: 5}]}>
+                <Text style={styles.subHeaderStyle}>Your stories</Text>
             </View>
 
             <View style={{flex: 6}}>
                 <ScrollView style={styles.scrollContainer}>
                     {fakebooks && fakebooks.map(item => (
                         // Add key based on 
-                        <TouchableOpacity key={item.id} onPress={() => viewBook(item)}>
+                        <TouchableOpacity key={key_id++} onPress={() => viewBook(item)}>
                             <View key={item.id} style={styles.bookStyle}>
                                 <Image source={require('../assets/images/no_cover_book.png')}/>
 
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
         flex: 2,
         backgroundColor: theme.colors.darkBox,
         borderRadius: 15,
-        paddingTop: 20,
+        paddingTop: 10,
         marginBottom: 5,
     },
 

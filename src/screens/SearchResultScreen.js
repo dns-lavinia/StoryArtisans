@@ -44,8 +44,9 @@ export default function SearchResultScreen ({ route, navigation }) {
 
     const viewBook = (item) => {
         navigation.navigate("BookViewScreen", {
-            title: item.title,
+            id: item.id,
             author: item.username,
+            title: item.title,
         });
     }
 

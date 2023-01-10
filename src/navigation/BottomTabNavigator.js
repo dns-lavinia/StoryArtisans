@@ -96,12 +96,12 @@ export default function BottomTabNavigator({ navigation }) {
 
           {/* Configuration for the Read tab */}
           <Tab.Screen 
-              name="Read" 
+              name="Virtual Bookshelf" 
               component={ReadStackNavigator}
               options={{
                 headerStyle: styles.headerStyle,
                 headerTintColor: theme.colors.text,
-                tabBarLabel: "Read",
+                tabBarLabel: "Virtual Bookshelf",
                 tabBarShowLabel: false,
                 tabBarIcon: ({ color }) => {
                   return <Feather name="book-open" color={color} size={26} />

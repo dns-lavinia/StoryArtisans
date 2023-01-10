@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 
 // Local atom imports
@@ -7,10 +7,13 @@ import IconButton from "../components/atoms/IconButton";
 import Button from "../components/atoms/Button";
 
 import { theme } from '../core/theme';
+import { AuthContext } from "../context/auth";
 
 export default function BookViewScreen ({route, navigation}) {
     const [story, setStory] = useState("");
     const [savedFlag, setSavedFlag] = useState(false);
+    const [showFlag, setShowFlag] = useState(true);
+    const [state, setState] = useContext(AuthContext);
     // console.log(route.params);
 
     useEffect(() => {
@@ -20,7 +23,7 @@ export default function BookViewScreen ({route, navigation}) {
     const fetchContent = async () => {
         // Fetch the book content from the server
         var queryData = {
-            username: route.params.author,
+            id: route.params.id,
             title: route.params.title
         };
 
@@ -31,6 +34,11 @@ export default function BookViewScreen ({route, navigation}) {
         // setStory(story);
 
         // compute the state of the savedFlag 
+
+        // do not show the saved Flag if the user sees his book
+        if(state.user.id === route.params.id) {
+            setShowFlag(false);
+        }
     };
 
     const SaveBook = async () => {
@@ -57,15 +65,21 @@ export default function BookViewScreen ({route, navigation}) {
                         size={30}
                     />
 
-                    <View style={styles.saveBtn}>
-                        <Button onPress={SaveBook}>
-                            {savedFlag? <Text>Saved</Text> : <Text>Save book</Text>}
-                        </Button>
-                    </View>
+                    {showFlag? 
+                        <View style={styles.saveBtn}>
+                            <Button onPress={SaveBook}>
+                                {savedFlag? <Text>Saved</Text> : <Text>Save book</Text>}
+                            </Button>
+                        </View>
+                        :
+                        ""
+                    }
                 </View>
                     
                 <Text style={styles.info}>Title: {route.params.title}</Text>
-                <Text style={[styles.info, {fontSize: 15}]}>By {route.params.author}</Text> 
+                <Text style={[styles.info, {fontSize: 15}]}>
+                    By {showFlag? route.params.author : "you"}
+                </Text> 
             </View>
 
             <View style={styles.rulerStyle}/>

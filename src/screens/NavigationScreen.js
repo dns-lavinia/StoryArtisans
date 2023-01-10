@@ -18,7 +18,7 @@ export default function NavigationScreen() {
 
     return (
         <RootStack.Navigator
-            initialRouteName="StartScreen"
+            initialRonuteName="StartScreen"
             screenOptions={{
                 headerShown: false,
             }}
